@@ -16,12 +16,19 @@ require('./routes');
 
 Vue.component('example', require('./components/Example.vue'));
 
-//vuex头部面包屑模块
+//面包屑
 const breadcrumb = {
     state: {
         title: "",
         description: "",
-        breadcrumb: [],
+        breadcrumb: []
+    },
+    mutations: {
+        change(state, data) {
+            state.title = data.title;
+            state.description = data.description;
+            state.breadcrumb = data.breadcrumb;
+        }
     }
 };
 
@@ -32,7 +39,7 @@ window.store = new Vuex.Store({
     }
 });
 
-const app = new Vue({
+window.vm = new Vue({
     el: '#app',
     store,
     router,

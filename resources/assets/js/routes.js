@@ -1,5 +1,9 @@
-const Foo = resolve => require(['./views/index.vue'], resolve);
-const Bar = { template: '<div>bar</div>' };
+const Foo = resolve => {
+    require.ensure(['./views/index.vue'], () => {
+        resolve(require('./views/index.vue'))
+    })
+};
+const Bar = {template: '<div>bar</div>'};
 
 const routes = [
     {path: '/', component: Foo},
@@ -10,6 +14,11 @@ window.router = new VueRouter({
     routes
 });
 
-// window.router.beforeEach((to, from, next) => {
-//     console.log(to, from, next);
-// });
+window.router.beforeEach((to, from, next) => {
+    store.commit("change", {
+        title: "",
+        description: "",
+        breadcrumb: []
+    });
+    next();
+});
