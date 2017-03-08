@@ -11,6 +11,8 @@ const routes = [
 ];
 
 window.router = new VueRouter({
+    mode: "history",
+    linkActiveClass: "active",
     routes
 });
 
