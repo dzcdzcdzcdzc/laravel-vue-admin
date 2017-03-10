@@ -13,18 +13,7 @@ class FrameController extends Controller
      */
     static function getPermissionArray()
     {
-        $collection = Permission::select("menu", "display_name", "path", "icons")
-            ->Where('icons', '!=', '')->get();
-        if (empty($collection)) return response()->json([]);
-        $collection->each(function ($item) use (&$array) {
-            $p = &$array;
-            foreach (explode("-", $item->menu) as $v) {
-                if (!isset($p[$v])) {
-                    $p[$v] = $item->toArray();
-                }
-                $p = &$p[$v]['children'];
-            }
-        });
-        return response()->json($array);
+        return Permission::select("menu", "display_name", "path", "icons")
+            ->where('icons', '!=', '')->get()->toJson();
     }
 }

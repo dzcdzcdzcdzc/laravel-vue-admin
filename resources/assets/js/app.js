@@ -55,7 +55,19 @@ const sidebar = {
     actions: {
         sidebar_get_menu(context) {
             axios.get('/api/path').then(function (response) {
-                context.commit('sidebar_menu_change', response.data);
+                let data = response.data;
+                let menu = {};
+                _(data).forEach(function (item) {
+                    let p = menu;
+                    _.forEach(item.menu.split("-"), function (v) {
+                        if (!p[v]) {
+                            item.children = {};
+                            p[v] = item;
+                        }
+                        p = p[v]['children'];
+                    });
+                });
+                context.commit('sidebar_menu_change', menu);
             }).catch(function (error) {
                 console.log(error);
             });
