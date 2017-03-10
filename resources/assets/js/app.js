@@ -12,25 +12,22 @@ require('./bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-const Foo = resolve => {
-    require.ensure(['./views/index.vue'], () => {
-        resolve(require('./views/index.vue'))
-    })
-};
-const Bar = {template: '<div>bar</div>'};
-
 const routes = [
-    {path: '/', component: Foo},
-    {path: '/bar', component: Bar}
+    {path: '/', component: resolve => {
+        require.ensure(['./views/index.vue'], () => {
+            resolve(require('./views/index.vue'))
+        })
+    }},
+    {path: '/bar', component: {template: '<div>bar</div>'}}
 ];
 
 window.router = new VueRouter({
     mode: "history",
-    linkActiveClass: "active",
     routes
 });
 
 window.router.beforeEach((to, from, next) => {
+    console.log(to);
     store.commit("breadcrumb_change", {
         title: "",
         description: "",

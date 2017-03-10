@@ -13,10 +13,10 @@
     <!-- Ionicons -->
     <link rel="stylesheet" href="//cdn.bootcss.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="{{ asset("admin/css/AdminLTE.css") }}">
+    <link rel="stylesheet" href="{{ asset("css/AdminLTE.css") }}">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
-    <link rel="stylesheet" href="{{ asset("admin/css/skins/_all-skins.css") }}">
+    <link rel="stylesheet" href="{{ asset("css/skins/_all-skins.css") }}">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -451,18 +451,18 @@
 <!-- ./wrapper -->
 
 <!-- Scripts -->
-<script src="{{ asset('admin/js/frame.js') }}"></script>
+<script src="{{ asset('js/frame.js') }}"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <!-- SlimScroll -->
-<script src="{{ asset('admin/plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
+<script src="{{ asset('plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
 <!-- FastClick -->
-<script src="{{ asset('admin/plugins/fastclick/fastclick.js') }}"></script>
+<script src="{{ asset('plugins/fastclick/fastclick.js') }}"></script>
 <!-- AdminLTE App -->
-<script src="{{ asset('admin/js/app.min.js') }}"></script>
+<script src="{{ asset('js/app.min.js') }}"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="{{ asset('admin/js/demo.js') }}"></script>
+<script src="{{ asset('js/demo.js') }}"></script>
 <!-- Last Scripts -->
-<script src="{{ asset('admin/js/last.js') }}"></script>
+<script src="{{ asset('js/last.js') }}"></script>
 </body>
 </html>

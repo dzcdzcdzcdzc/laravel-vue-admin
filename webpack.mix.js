@@ -11,7 +11,7 @@ const {mix} = require('laravel-mix');
  |
  */
 
-mix.js('resources/assets/js/app.js', 'public/admin/js/frame.js');
+mix.js('resources/assets/js/app.js', 'public/js/frame.js');
 mix.autoload({
     jQuery: 'jquery',
     $: 'jquery',

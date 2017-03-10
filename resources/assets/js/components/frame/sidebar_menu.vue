@@ -19,7 +19,6 @@
     export default {
         computed:{
             menu(){
-                console.log(store.state.sidebar.menu)
                 return store.state.sidebar.menu
             }
         }
