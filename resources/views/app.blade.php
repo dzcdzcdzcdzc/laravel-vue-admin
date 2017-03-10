@@ -220,24 +220,7 @@
             </form>
             <!-- /.search form -->
             <!-- sidebar menu: : style can be found in sidebar.less -->
-            <ul class="sidebar-menu">
-                @foreach($permission as $header)
-                <li class="header"><i class="fa {{$header['icons']}}"></i>{{$header['display_name']}}</li>
-                @if(isset($header['children']))
-                @foreach($header['children'] as $treeview)
-                <router-link class="treeview" to="{{$treeview['route']}}" tag="li">
-                    <a>
-                        <i class="fa {{$treeview['icons']}}"></i><span>{{$treeview['display_name']}}</span>
-                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
-                    </a>
-                    @if(isset($treeview['children']))
-                        @include('treeview', ['treeview'=>$treeview['children']])
-                    @endif
-                </router-link>
-                @endforeach
-                @endif
-                @endforeach
-            </ul>
+            <sidebar_menu></sidebar_menu>
         </section>
         <!-- /.sidebar -->
     </aside>
@@ -248,7 +231,9 @@
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h1>@{{this.$store.state.breadcrumb.title}}<small>@{{this.$store.state.breadcrumb.description}}</small></h1>
+            <h1>@{{this.$store.state.breadcrumb.title}}
+                <small>@{{this.$store.state.breadcrumb.description}}</small>
+            </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
                 <li><a href="#">Layout</a></li>
@@ -477,5 +462,7 @@
 <script src="{{ asset('admin/js/app.min.js') }}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{ asset('admin/js/demo.js') }}"></script>
+<!-- Last Scripts -->
+<script src="{{ asset('admin/js/last.js') }}"></script>
 </body>
 </html>

@@ -13,4 +13,8 @@
 
 Auth::routes();
 
+Route::group(['prefix' => 'api'], function () {
+    Route::get('/path', 'FrameController@getPermissionArray');
+});
+
 Route::get('/{a?}/{b?}/{c?}/{d?}/{e?}', 'HomeController@index');

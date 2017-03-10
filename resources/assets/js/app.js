@@ -12,9 +12,59 @@ require('./bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-require('./routes');
+const Foo = resolve => {
+    require.ensure(['./views/index.vue'], () => {
+        resolve(require('./views/index.vue'))
+    })
+};
+const Bar = {template: '<div>bar</div>'};
+
+const routes = [
+    {path: '/', component: Foo},
+    {path: '/bar', component: Bar}
+];
+
+window.router = new VueRouter({
+    mode: "history",
+    linkActiveClass: "active",
+    routes
+});
+
+window.router.beforeEach((to, from, next) => {
+    store.commit("breadcrumb_change", {
+        title: "",
+        description: "",
+        breadcrumb: []
+    });
+    next();
+});
 
 Vue.component('example', require('./components/Example.vue'));
+
+Vue.component('sidebar_menu', require('./components/frame/sidebar_menu.vue'));
+
+Vue.component('sidebar_menu_treeview', require('./components/frame/sidebar_menu_treeview.vue'));
+
+//路由
+const sidebar = {
+    state: {
+        menu: {}
+    },
+    mutations: {
+        sidebar_menu_change (state, data) {
+            state.menu = data;
+        }
+    },
+    actions: {
+        sidebar_get_menu(context) {
+            axios.get('/api/path').then(function (response) {
+                context.commit('sidebar_menu_change', response.data);
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+    }
+};
 
 //面包屑
 const breadcrumb = {
@@ -24,7 +74,7 @@ const breadcrumb = {
         breadcrumb: []
     },
     mutations: {
-        change(state, data) {
+        breadcrumb_change(state, data) {
             state.title = data.title;
             state.description = data.description;
             state.breadcrumb = data.breadcrumb;
@@ -35,7 +85,8 @@ const breadcrumb = {
 //vuex加载模块
 window.store = new Vuex.Store({
     modules: {
-        breadcrumb
+        sidebar,
+        breadcrumb,
     }
 });
 
@@ -44,3 +95,5 @@ window.vm = new Vue({
     store,
     router,
 });
+
+store.dispatch('sidebar_get_menu');
