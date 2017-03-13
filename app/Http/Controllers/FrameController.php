@@ -13,7 +13,7 @@ class FrameController extends Controller
      */
     static function getPermissionArray()
     {
-        return Permission::select("menu", "display_name", "path", "icons")
+        return Permission::select("menu", "display_name", "description", "path", "icons", "exact")
             ->where('icons', '!=', '')->get()->toJson();
     }
 }

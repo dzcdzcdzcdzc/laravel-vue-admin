@@ -15,5 +15,6 @@ mix.js('resources/assets/js/app.js', 'public/js/frame.js');
 mix.autoload({
     jQuery: 'jquery',
     $: 'jquery',
-    jquery: 'jquery'
+    jquery: 'jquery',
+    _: 'lodash'
 });
