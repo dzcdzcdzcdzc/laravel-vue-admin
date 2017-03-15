@@ -15,6 +15,9 @@ Auth::routes();
 
 Route::group(['prefix' => 'api'], function () {
     Route::get('/path', 'FrameController@getPermissionArray');
+
+    //用户管理
+    Route::get('/users', 'UsersController@index');
 });
 
 Route::get('/{a?}/{b?}/{c?}/{d?}/{e?}', 'HomeController@index');

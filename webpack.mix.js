@@ -1,4 +1,4 @@
-const {mix} = require('laravel-mix');
+const { mix } = require('laravel-mix');
 
 /*
  |--------------------------------------------------------------------------
@@ -11,6 +11,7 @@ const {mix} = require('laravel-mix');
  |
  */
 
+mix.copy('node_modules/datatables.net-bs/css/dataTables.bootstrap.css', 'public/css/plugins/dataTables.bootstrap.css');
 mix.js('resources/assets/js/app.js', 'public/js/frame.js');
 mix.autoload({
     jQuery: 'jquery',

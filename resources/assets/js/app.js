@@ -11,36 +11,11 @@ require('./bootstrap');
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+require('./router');
 
-const routes = [
-    {
-        path: '/', component: resolve => {
-        require.ensure(['./views/index.vue'], () => {
-            resolve(require('./views/index.vue'))
-        })
-    }
-    },
-    {path: '/bar', component: {template: '<div>bar</div>'}}
-];
+require('./components');
 
-window.router = new VueRouter({
-    mode: "history",
-    routes
-});
-
-window.router.beforeEach((to, from, next) => {
-    store.commit('breadcrumb_change', to.path);
-    next();
-});
-
-Vue.component('example', require('./components/Example.vue'));
-
-Vue.component('sidebar_menu', require('./components/frame/sidebar_menu.vue'));
-
-Vue.component('sidebar_menu_treeview', require('./components/frame/sidebar_menu_treeview.vue'));
-
-Vue.component('content_header', require('./components/frame/content_header.vue'));
-//路由
+//vuex侧边栏生成
 const sidebar = {
     state: {
         menu: {}
@@ -74,7 +49,7 @@ const sidebar = {
     }
 };
 
-//面包屑
+//vuex面包屑
 const breadcrumb = {
     state: {
         title: "",
