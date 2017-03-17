@@ -15,6 +15,8 @@
                                 <th>序号</th>
                                 <th>名字</th>
                                 <th>邮箱</th>
+                                <th>邮箱</th>
+                                <th>邮箱</th>
                                 <th>创建时间</th>
                                 <th>操作</th>
                             </tr>
@@ -37,7 +39,6 @@
     export default {
         data(){
             return {
-                checkedId: [],
                 datatables:{
                     order: [[1, "asc"]],
                     columns: [
@@ -49,6 +50,8 @@
                         },
                         {"data": "id"},
                         {"data": "name"},
+                        {"data": "email"},
+                        {"data": "email"},
                         {"data": "email"},
                         {"data": "created_at"},
                         {
@@ -66,9 +69,6 @@
                     }
                 }
             }
-        },
-        mounted() {
-            console.log('Component mounted.')
         }
     }
 
