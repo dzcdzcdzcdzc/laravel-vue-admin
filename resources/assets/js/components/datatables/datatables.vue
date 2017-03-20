@@ -135,6 +135,7 @@
                 })
             )
             this.self = $("#"+this.id).DataTable(_.defaultsDeep(this.conf,dconf));
+            this.$emit('api', this.self);
         },
         destroyed() {
             this.self.destroy();

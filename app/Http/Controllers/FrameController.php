@@ -11,9 +11,8 @@ class FrameController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    static function getPermissionArray()
+    static function getPermission()
     {
-        return Permission::select("menu", "display_name", "description", "path", "icons", "exact")
-            ->where('icons', '!=', '')->get()->toJson();
+        return Permission::select("name", "menu", "display_name", "description", "path", "icons", "exact")->get()->toJson();
     }
 }

@@ -19,7 +19,7 @@
     export default {
         computed:{
             menu(){
-                return store.state.sidebar.menu
+                return store.state.frame.sidebar_menu
             }
         }
     }

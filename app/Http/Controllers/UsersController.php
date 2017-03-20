@@ -23,7 +23,6 @@ class UsersController extends Controller
         $dt['recordsFiltered'] = $list->count();
         $dt['data'] = $list->skip($start)->take($length)->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])->get();
         $dt['draw'] = intval($request->input('draw', 0));
-        // $dt['error']='暂时没有数据';
         return response()->json($dt);
     }
 }

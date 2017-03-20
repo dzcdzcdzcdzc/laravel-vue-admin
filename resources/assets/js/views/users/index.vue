@@ -15,8 +15,6 @@
                                 <th>序号</th>
                                 <th>名字</th>
                                 <th>邮箱</th>
-                                <th>邮箱</th>
-                                <th>邮箱</th>
                                 <th>创建时间</th>
                                 <th>操作</th>
                             </tr>
@@ -36,6 +34,7 @@
 
 </style>
 <script>
+    import 'tooltipster'
     export default {
         data(){
             return {
@@ -51,13 +50,19 @@
                         {"data": "id"},
                         {"data": "name"},
                         {"data": "email"},
-                        {"data": "email"},
-                        {"data": "email"},
                         {"data": "created_at"},
                         {
                             "data": "operate", "orderable": false,
                             "render": function (data, type, row) {
-                                return "<button class='btn-white btn btn-xs' onclick='window.open(\"/article/" + row.id + "/edit\",\"_blank\")'>编辑</button><button class='btn-white btn btn-xs' onclick='singledel(\"/article/" + row.id + "\");'>删除</button>";
+                                var str= '<div class="btn-group">';
+                                if(can('用户管理修改')){
+                                    str +='<button type="button" class="btn btn-default btn-xs">修改</button>';
+                                }
+                                if(can('用户管理删除')){
+                                    str +=`<button type="button" class="btn btn-default btn-xs deletebtn" data-id="${row.id}">删除</button>`;
+                                }
+                                str += '</div>';
+                                return str;
                             }
                         }
                     ],
@@ -66,6 +71,35 @@
                         data: function (d) {
                             //额外数据
                         }
+                    },
+                    "drawCallback": function(settings) {
+                        $('.deletebtn').tooltipster({
+                            contentAsHTML: true,
+                            interactive: true,
+                            theme: 'tooltipster-light',
+                            trigger: 'click',
+                            content: `<div class="form-group text-center">确定删除吗</div>
+                            <div class="btn-group">
+                            <button type="button" class="btn btn-danger">是</button>
+                            <button type="button" class="btn btn-info">否</button>
+                            </div>`,
+                            functionReady: function(){
+                                let id = $(this)[0]['_$origin'].attr('data-id'));
+                                //删除确定事件
+                                $('.tooltipster-sidetip button.btn-danger').click(function(){
+                                    $('.deletebtn').tooltipster('hide');
+                                    axios.delete('/api/users/'+id).then(function (response) {
+                                        //todo 通知
+                                    }).catch(function (error) {
+                                        console.error(error);
+                                    });
+                                });
+                                //删除取消事件
+                                $('.tooltipster-sidetip button.btn-info').click(function(){
+                                    $('.deletebtn').tooltipster('hide');
+                                });
+                            }
+                        });
                     }
                 }
             }
@@ -73,3 +107,7 @@
     }
 
 </script>
+<style>
+    @import "/css/plugins/tooltipster.css";
+    @import "/css/plugins/tooltipster-sideTip-light.min.css";
+</style>

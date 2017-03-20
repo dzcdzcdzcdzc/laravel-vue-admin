@@ -450,59 +450,6 @@ module.exports = {
 /* 1 */
 /***/ (function(module, exports) {
 
-module.exports = function normalizeComponent (
-  rawScriptExports,
-  compiledTemplate,
-  scopeId,
-  cssModules
-) {
-  var esModule
-  var scriptExports = rawScriptExports = rawScriptExports || {}
-
-  // ES6 modules interop
-  var type = typeof rawScriptExports.default
-  if (type === 'object' || type === 'function') {
-    esModule = rawScriptExports
-    scriptExports = rawScriptExports.default
-  }
-
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (compiledTemplate) {
-    options.render = compiledTemplate.render
-    options.staticRenderFns = compiledTemplate.staticRenderFns
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = scopeId
-  }
-
-  // inject cssModules
-  if (cssModules) {
-    var computed = options.computed || (options.computed = {})
-    Object.keys(cssModules).forEach(function (key) {
-      var module = cssModules[key]
-      computed[key] = function () { return module }
-    })
-  }
-
-  return {
-    esModule: esModule,
-    exports: scriptExports,
-    options: options
-  }
-}
-
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -686,6 +633,59 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+module.exports = function normalizeComponent (
+  rawScriptExports,
+  compiledTemplate,
+  scopeId,
+  cssModules
+) {
+  var esModule
+  var scriptExports = rawScriptExports = rawScriptExports || {}
+
+  // ES6 modules interop
+  var type = typeof rawScriptExports.default
+  if (type === 'object' || type === 'function') {
+    esModule = rawScriptExports
+    scriptExports = rawScriptExports.default
+  }
+
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (compiledTemplate) {
+    options.render = compiledTemplate.render
+    options.staticRenderFns = compiledTemplate.staticRenderFns
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = scopeId
+  }
+
+  // inject cssModules
+  if (cssModules) {
+    var computed = options.computed || (options.computed = {})
+    Object.keys(cssModules).forEach(function (key) {
+      var module = cssModules[key]
+      computed[key] = function () { return module }
+    })
+  }
+
+  return {
+    esModule: esModule,
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -784,7 +784,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
 /* 4 */
@@ -969,7 +969,7 @@ module.exports = function xhrAdapter(config) {
   });
 };
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
 /* 5 */
@@ -1082,7 +1082,7 @@ module.exports = g;
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/**
+/* WEBPACK VAR INJECTION */(function(process) {/**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
@@ -1099,20 +1099,34 @@ __webpack_require__(52);
 
 __webpack_require__(51);
 
-//vuex侧边栏生成
-var sidebar = {
+//框架
+var frame = {
     state: {
-        menu: {}
+        permissions: {},
+        sidebar_menu: {}
+    },
+    getters: {
+        //获取permissions中的menu部分
+        get_menu: function get_menu(state) {
+            return _.reject(state.permissions, { 'icons': '' });
+        }
     },
     mutations: {
+        permissions_change: function permissions_change(state, data) {
+            state.permissions = data;
+        },
         sidebar_menu_change: function sidebar_menu_change(state, data) {
-            state.menu = data;
+            state.sidebar_menu = data;
         }
     },
     actions: {
-        sidebar_get_menu: function sidebar_get_menu(context) {
+        init: function init(state) {
+            //获取用户权限
             axios.get('/api/path').then(function (response) {
                 var data = response.data;
+                state.commit('permissions_change', data);
+                //将用户权限中的菜单组成树
+                data = state.getters.get_menu;
                 var menu = {};
                 _(data).forEach(function (item) {
                     var p = menu;
@@ -1124,10 +1138,10 @@ var sidebar = {
                         p = p[v]['children'];
                     });
                 });
-                context.commit('sidebar_menu_change', menu);
-                store.commit('breadcrumb_change', window.location.pathname);
+                state.commit('sidebar_menu_change', menu);
+                state.commit('breadcrumb_change', window.location.pathname);
             }).catch(function (error) {
-                console.log(error);
+                console.error(error);
             });
         }
     }
@@ -1145,6 +1159,7 @@ var breadcrumb = {
         /**
          *查找路由更新面包屑
          * @param state
+         * @param path
          */
         breadcrumb_change: function breadcrumb_change(state, path) {
             function find(menu) {
@@ -1190,7 +1205,7 @@ var breadcrumb = {
             }
 
             store.commit('breadcrumb_clear');
-            var menu = store.state.sidebar.menu;
+            var menu = store.getters.get_menu;
             if (!_.isObject(menu) || _.isEmpty(menu)) {
                 return false;
             }
@@ -1198,7 +1213,6 @@ var breadcrumb = {
             _.first(state.breadcrumb).first = 1;
             _.last(state.breadcrumb).last = 1;
         },
-
         /**
          * 面包屑清除
          * @param state
@@ -1214,8 +1228,9 @@ var breadcrumb = {
 
 //vuex加载模块
 window.store = new Vuex.Store({
+    strict: process.env.NODE_ENV !== 'production',
     modules: {
-        sidebar: sidebar,
+        frame: frame,
         breadcrumb: breadcrumb
     }
 });
@@ -1226,7 +1241,13 @@ window.vm = new Vue({
     router: router
 });
 
-store.dispatch('sidebar_get_menu');
+//全局方法
+window.can = function (name) {
+    return !!_.find(store.state.frame.permissions, { name: name });
+};
+
+store.dispatch('init');
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
 /* 11 */
@@ -11897,7 +11918,7 @@ module.exports = function spread(callback) {
 /* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Component = __webpack_require__(1)(
+var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(46),
   /* template */
@@ -11931,7 +11952,7 @@ module.exports = Component.exports
 /* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Component = __webpack_require__(1)(
+var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(47),
   /* template */
@@ -11965,7 +11986,7 @@ module.exports = Component.exports
 /* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Component = __webpack_require__(1)(
+var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(48),
   /* template */
@@ -11999,7 +12020,7 @@ module.exports = Component.exports
 /* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Component = __webpack_require__(1)(
+var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(49),
   /* template */
@@ -14285,7 +14306,7 @@ if (inBrowser && window.Vue) {
 }
 
 module.exports = VueRouter;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
 /* 42 */
@@ -24377,7 +24398,7 @@ Vue$3.compile = compileToFunctions;
 
 module.exports = Vue$3;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(9)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(9)))
 
 /***/ }),
 /* 45 */
@@ -41565,7 +41586,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = {
     computed: {
         menu: function menu() {
-            return store.state.sidebar.menu;
+            return store.state.frame.sidebar_menu;
         }
     }
 };
@@ -41663,7 +41684,7 @@ Vue.component('sidebar_menu_treeview', __webpack_require__(36));
 Vue.component('content_header', __webpack_require__(34));
 //datatable
 Vue.component('datatables', function (resolve) {
-    __webpack_require__.e/* require.ensure */(0).then((function () {
+    __webpack_require__.e/* require.ensure */(1).then((function () {
         resolve(__webpack_require__(12));
     }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
 });
@@ -41681,7 +41702,7 @@ var routes = [{
     }
 }, {
     path: '/users', component: function component(resolve) {
-        __webpack_require__.e/* require.ensure */(1).then((function () {
+        __webpack_require__.e/* require.ensure */(0).then((function () {
             resolve(__webpack_require__(14));
         }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
     }

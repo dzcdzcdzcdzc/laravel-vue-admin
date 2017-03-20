@@ -15,20 +15,34 @@ require('./router');
 
 require('./components');
 
-//vuex侧边栏生成
-const sidebar = {
+//框架
+const frame = {
     state: {
-        menu: {}
+        permissions: {},
+        sidebar_menu: {}
     },
-    mutations: {
-        sidebar_menu_change (state, data) {
-            state.menu = data;
+    getters: {
+        //获取permissions中的menu部分
+        get_menu: state => {
+            return _.reject(state.permissions, {'icons': ''});
         }
     },
+    mutations: {
+        permissions_change: (state, data) => {
+            state.permissions = data;
+        },
+        sidebar_menu_change: (state, data) => {
+            state.sidebar_menu = data;
+        },
+    },
     actions: {
-        sidebar_get_menu(context) {
+        init: state => {
+            //获取用户权限
             axios.get('/api/path').then(function (response) {
                 let data = response.data;
+                state.commit('permissions_change', data);
+                //将用户权限中的菜单组成树
+                data = state.getters.get_menu;
                 let menu = {};
                 _(data).forEach(function (item) {
                     let p = menu;
@@ -40,10 +54,10 @@ const sidebar = {
                         p = p[v]['children'];
                     });
                 });
-                context.commit('sidebar_menu_change', menu);
-                store.commit('breadcrumb_change', window.location.pathname);
+                state.commit('sidebar_menu_change', menu);
+                state.commit('breadcrumb_change', window.location.pathname);
             }).catch(function (error) {
-                console.log(error);
+                console.error(error);
             });
         }
     }
@@ -61,8 +75,9 @@ const breadcrumb = {
         /**
          *查找路由更新面包屑
          * @param state
+         * @param path
          */
-        breadcrumb_change(state, path) {
+        breadcrumb_change: (state, path) => {
             function find(menu) {
                 for (let key of Object.keys(menu)) {
                     let item = menu[key];
@@ -85,7 +100,7 @@ const breadcrumb = {
             }
 
             store.commit('breadcrumb_clear');
-            let menu = store.state.sidebar.menu;
+            let menu = store.getters.get_menu;
             if (!_.isObject(menu) || _.isEmpty(menu)) {
                 return false;
             }
@@ -97,7 +112,7 @@ const breadcrumb = {
          * 面包屑清除
          * @param state
          */
-        breadcrumb_clear(state){
+        breadcrumb_clear: state => {
             state.title = "";
             state.menu = "";
             state.description = "";
@@ -108,8 +123,9 @@ const breadcrumb = {
 
 //vuex加载模块
 window.store = new Vuex.Store({
+    strict: process.env.NODE_ENV !== 'production',
     modules: {
-        sidebar,
+        frame,
         breadcrumb,
     }
 });
@@ -120,4 +136,7 @@ window.vm = new Vue({
     router,
 });
 
-store.dispatch('sidebar_get_menu');
+//全局方法
+window.can = (name) => !!_.find(store.state.frame.permissions, {name:name});
+
+store.dispatch('init');
