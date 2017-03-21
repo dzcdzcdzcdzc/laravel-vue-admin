@@ -12,6 +12,7 @@ const { mix } = require('laravel-mix');
  */
 
 mix.copy('node_modules/datatables.net-bs/css/dataTables.bootstrap.css', 'public/css/plugins/dataTables.bootstrap.css');
+mix.copy('node_modules/toastr/build/toastr.min.css', 'public/css/plugins/toastr.min.css');
 mix.combine(['node_modules/tooltipster/dist/css/tooltipster.bundle.css',
 'node_modules/tooltipster/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-light.min.css'],
 'public/css/plugins/tooltipster.css');

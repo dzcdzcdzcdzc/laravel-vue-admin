@@ -72,7 +72,7 @@
                             //额外数据
                         }
                     },
-                    "drawCallback": function(settings) {
+                    drawCallback: function(settings) {
                         $('.deletebtn').tooltipster({
                             contentAsHTML: true,
                             interactive: true,
@@ -84,15 +84,19 @@
                             <button type="button" class="btn btn-info">否</button>
                             </div>`,
                             functionReady: function(){
-                                let id = $(this)[0]['_$origin'].attr('data-id'));
+                                let id = $(this)[0]['_$origin'].attr('data-id');
                                 //删除确定事件
                                 $('.tooltipster-sidetip button.btn-danger').click(function(){
                                     $('.deletebtn').tooltipster('hide');
                                     axios.delete('/api/users/'+id).then(function (response) {
-                                        //todo 通知
-                                    }).catch(function (error) {
-                                        console.error(error);
-                                    });
+                                        if(!response.data.error){
+                                            toastr.success(response.data.msg);
+                                            store.state.frame.temp.datatables.api.clearPipeline();
+                                            store.state.frame.temp.datatables.api.ajax.reload(null,false);
+                                            return false;
+                                        }
+                                        toastr.error(response.data.msg);
+                                    }).catch(ajax_except);
                                 });
                                 //删除取消事件
                                 $('.tooltipster-sidetip button.btn-info').click(function(){
@@ -109,5 +113,4 @@
 </script>
 <style>
     @import "/css/plugins/tooltipster.css";
-    @import "/css/plugins/tooltipster-sideTip-light.min.css";
 </style>

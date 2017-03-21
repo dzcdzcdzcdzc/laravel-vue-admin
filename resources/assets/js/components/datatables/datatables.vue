@@ -12,10 +12,18 @@
 <script>
     import 'datatables.net-bs'
     export default {
-        props: ['conf'],
+        props: {
+            'name':{
+                type: String,
+                default: 'datatables'
+            },
+            'conf':{
+                type: Object,
+                default: {}
+            }
+        },
         data() {
             return {
-                self : Object,
                 id : 'datatables'+Math.floor(Math.random()*100000)
             }
         },
@@ -134,11 +142,12 @@
                     }
                 })
             )
-            this.self = $("#"+this.id).DataTable(_.defaultsDeep(this.conf,dconf));
-            this.$emit('api', this.self);
+            let self = $("#"+this.id).DataTable(_.defaultsDeep(this.conf,dconf));
+            store.commit('temp_change', {name: this.name+".api", data:self});
         },
         destroyed() {
             this.self.destroy();
+            state.commit('temp_change', this.name, {});
         }
     }
 </script>

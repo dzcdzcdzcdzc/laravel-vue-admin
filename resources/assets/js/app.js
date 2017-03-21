@@ -15,11 +15,50 @@ require('./router');
 
 require('./components');
 
+//全局通知
+window.toastr = require('toastr');
+window.toastr.options = {
+    "closeButton": false,
+    "debug": false,
+    "newestOnTop": false,
+    "progressBar": true,
+    "positionClass": "toast-top-right",
+    "preventDuplicates": false,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+};
+//全局请求错误处理方法
+window.ajax_except = error => {
+    if(error.response){
+        if(error.response.data.error){
+            toastr.error(error.response.data.error);
+            return;
+        }
+        switch(error.response.status){
+            case 405:
+                toastr.error("请求方法不允许");
+                return;
+            case 500:
+                toastr.error("服务器错误");
+                return;
+        }
+    }
+    toastr.error(error.message);
+};
+
 //框架
 const frame = {
     state: {
-        permissions: {},
-        sidebar_menu: {}
+        temp:{}, //临时
+        permissions: {}, //权限
+        sidebar_menu: {}, //菜单
     },
     getters: {
         //获取permissions中的menu部分
@@ -28,6 +67,17 @@ const frame = {
         }
     },
     mutations: {
+        temp_change: (state, data) => {
+            let arr = data.name.split('.');
+            let p = state.temp;
+            for(let i=0 ;i<arr.length-1;i++) {
+                if (typeof(p[arr[i]]) == "undefined") {
+                    p[arr[i]] = {};
+                }
+                p = p[arr[i]];
+            }
+            p[_.last(arr)] = data.data;
+        },
         permissions_change: (state, data) => {
             state.permissions = data;
         },
@@ -56,9 +106,7 @@ const frame = {
                 });
                 state.commit('sidebar_menu_change', menu);
                 state.commit('breadcrumb_change', window.location.pathname);
-            }).catch(function (error) {
-                console.error(error);
-            });
+            }).catch(ajax_except);
         }
     }
 };
@@ -137,6 +185,6 @@ window.vm = new Vue({
 });
 
 //全局方法
-window.can = (name) => !!_.find(store.state.frame.permissions, {name:name});
+window.can = name => !!_.find(store.state.frame.permissions, {name});
 
 store.dispatch('init');
