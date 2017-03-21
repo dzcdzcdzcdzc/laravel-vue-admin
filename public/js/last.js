@@ -1,5 +1,5 @@
 // FIXME:用vue-router的router-link
-$("#app").on("click", "a", function () {
+$("#app").on("click", "a", function (event) {
     var self = $(this);
     var href = self.attr("href");
     switch (true) {
