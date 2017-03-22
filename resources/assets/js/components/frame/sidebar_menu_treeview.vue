@@ -18,7 +18,7 @@
         props: ['treeview'],
         computed:{
             currentMenu(){
-                return store.state.breadcrumb.menu
+                return store.state.breadcrumb.menu;
             }
         }
     }

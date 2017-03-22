@@ -144,10 +144,14 @@
             )
             let self = $("#"+this.id).DataTable(_.defaultsDeep(this.conf,dconf));
             store.commit('temp_change', {name: this.name+".api", data:self});
+            store.commit('temp_change', {name: this.name+".reload", data: function(){
+                this.api.clearPipeline();
+                this.api.ajax.reload(null,false);
+            }});
         },
         destroyed() {
-            this.self.destroy();
-            state.commit('temp_change', this.name, {});
+            store.dispatch('temp_trigger', {name: this.name+".api.destroy", data:null});
+            store.commit('temp_delete', this.name);
         }
     }
 </script>

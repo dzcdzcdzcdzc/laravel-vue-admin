@@ -90,9 +90,8 @@
                                     $('.deletebtn').tooltipster('hide');
                                     axios.delete('/api/users/'+id).then(function (response) {
                                         if(!response.data.error){
+                                            store.dispatch('temp_trigger', {name:"datatables.reload", data:null});
                                             toastr.success(response.data.msg);
-                                            store.state.frame.temp.datatables.api.clearPipeline();
-                                            store.state.frame.temp.datatables.api.ajax.reload(null,false);
                                             return false;
                                         }
                                         toastr.error(response.data.msg);

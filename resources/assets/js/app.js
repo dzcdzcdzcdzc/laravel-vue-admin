@@ -36,12 +36,12 @@ window.toastr.options = {
 };
 //全局请求错误处理方法
 window.ajax_except = error => {
-    if(error.response){
-        if(error.response.data.error){
+    if (error.response) {
+        if (error.response.data.error) {
             toastr.error(error.response.data.error);
             return;
         }
-        switch(error.response.status){
+        switch (error.response.status) {
             case 405:
                 toastr.error("请求方法不允许");
                 return;
@@ -53,10 +53,44 @@ window.ajax_except = error => {
     toastr.error(error.message);
 };
 
+const temp = {
+    state: {},
+    mutations: {
+        temp_change: (state, data) => {
+            let arr = data.name.split('.');
+            let p = state;
+            for (let i = 0; i < arr.length - 1; i++) {
+                if (typeof(p[arr[i]]) == "undefined") {
+                    p[arr[i]] = {};
+                }
+                p = p[arr[i]];
+            }
+            p[_.last(arr)] = data.data;
+        },
+        temp_delete: (state, data) => {
+            let arr = data.split('.');
+            let p = state;
+            for (let i = 0; i < arr.length - 1; i++) {
+                p = p[arr[i]];
+            }
+            delete p[_.last(arr)];
+        }
+    },
+    actions: {
+        temp_trigger: (state, data) => {
+            let arr = data.name.split('.');
+            let p = state.state;
+            for (let i = 0; i < arr.length - 1; i++) {
+                p = p[arr[i]];
+            }
+            p[_.last(arr)](data.data);
+        }
+    }
+};
+
 //框架
 const frame = {
     state: {
-        temp:{}, //临时
         permissions: {}, //权限
         sidebar_menu: {}, //菜单
     },
@@ -67,17 +101,6 @@ const frame = {
         }
     },
     mutations: {
-        temp_change: (state, data) => {
-            let arr = data.name.split('.');
-            let p = state.temp;
-            for(let i=0 ;i<arr.length-1;i++) {
-                if (typeof(p[arr[i]]) == "undefined") {
-                    p[arr[i]] = {};
-                }
-                p = p[arr[i]];
-            }
-            p[_.last(arr)] = data.data;
-        },
         permissions_change: (state, data) => {
             state.permissions = data;
         },
@@ -135,6 +158,7 @@ const breadcrumb = {
                             state.title = item.display_name;
                             state.menu = item.menu;
                             state.description = item.description;
+                            state.breadcrumb = [];
                             state.breadcrumb.unshift({url: item.path, title: item.display_name});
                             return true;
                         }
@@ -147,7 +171,6 @@ const breadcrumb = {
                 return false;
             }
 
-            store.commit('breadcrumb_clear');
             let menu = store.getters.get_menu;
             if (!_.isObject(menu) || _.isEmpty(menu)) {
                 return false;
@@ -155,16 +178,6 @@ const breadcrumb = {
             find(menu);
             _.first(state.breadcrumb).first = 1;
             _.last(state.breadcrumb).last = 1;
-        },
-        /**
-         * 面包屑清除
-         * @param state
-         */
-        breadcrumb_clear: state => {
-            state.title = "";
-            state.menu = "";
-            state.description = "";
-            state.breadcrumb = [];
         }
     }
 };
@@ -173,6 +186,7 @@ const breadcrumb = {
 window.store = new Vuex.Store({
     strict: process.env.NODE_ENV !== 'production',
     modules: {
+        temp,
         frame,
         breadcrumb,
     }
