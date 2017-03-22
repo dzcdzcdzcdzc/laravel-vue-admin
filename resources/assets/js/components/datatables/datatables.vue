@@ -143,15 +143,15 @@
                 })
             )
             let self = $("#"+this.id).DataTable(_.defaultsDeep(this.conf,dconf));
-            store.commit('temp_change', {name: this.name+".api", data:self});
-            store.commit('temp_change', {name: this.name+".reload", data: function(){
+            temp.store(this.name+".api", self);
+            temp.store(this.name+".reload", function(){
                 this.api.clearPipeline();
                 this.api.ajax.reload(null,false);
-            }});
+            });
         },
         destroyed() {
-            store.dispatch('temp_trigger', {name: this.name+".api.destroy", data:null});
-            store.commit('temp_delete', this.name);
+            temp.state[this.name].api.destroy();
+            temp.delete(this.name);
         }
     }
 </script>

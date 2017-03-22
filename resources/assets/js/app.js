@@ -53,41 +53,6 @@ window.ajax_except = error => {
     toastr.error(error.message);
 };
 
-const temp = {
-    state: {},
-    mutations: {
-        temp_change: (state, data) => {
-            let arr = data.name.split('.');
-            let p = state;
-            for (let i = 0; i < arr.length - 1; i++) {
-                if (typeof(p[arr[i]]) == "undefined") {
-                    p[arr[i]] = {};
-                }
-                p = p[arr[i]];
-            }
-            p[_.last(arr)] = data.data;
-        },
-        temp_delete: (state, data) => {
-            let arr = data.split('.');
-            let p = state;
-            for (let i = 0; i < arr.length - 1; i++) {
-                p = p[arr[i]];
-            }
-            delete p[_.last(arr)];
-        }
-    },
-    actions: {
-        temp_trigger: (state, data) => {
-            let arr = data.name.split('.');
-            let p = state.state;
-            for (let i = 0; i < arr.length - 1; i++) {
-                p = p[arr[i]];
-            }
-            p[_.last(arr)](data.data);
-        }
-    }
-};
-
 //框架
 const frame = {
     state: {
@@ -128,7 +93,7 @@ const frame = {
                     });
                 });
                 state.commit('sidebar_menu_change', menu);
-                state.commit('breadcrumb_change', window.location.pathname);
+                state.dispatch('breadcrumb_change', window.location.pathname);
             }).catch(ajax_except);
         }
     }
@@ -146,8 +111,15 @@ const breadcrumb = {
         /**
          *查找路由更新面包屑
          * @param state
-         * @param path
          */
+        breadcrumb_change: (state, data) => {
+            state.title = data.title;
+            state.menu = data.menu;
+            state.description = data.description;
+            state.breadcrumb = data.breadcrumb;
+        }
+    },
+    actions: {
         breadcrumb_change: (state, path) => {
             function find(menu) {
                 for (let key of Object.keys(menu)) {
@@ -155,29 +127,30 @@ const breadcrumb = {
                     if (item.path) {
                         if ((item.exact && path == item.path) ||
                             (!item.exact && !path.indexOf(item.path))) {
-                            state.title = item.display_name;
-                            state.menu = item.menu;
-                            state.description = item.description;
-                            state.breadcrumb = [];
-                            state.breadcrumb.unshift({url: item.path, title: item.display_name});
+                            data.title = item.display_name;
+                            data.menu = item.menu;
+                            data.description = item.description;
+                            data.breadcrumb.unshift({url: item.path, title: item.display_name});
                             return true;
                         }
                     }
                     if (!_.isEmpty(item.children) && find(item.children)) {
-                        state.breadcrumb.unshift({url: item.path, title: item.display_name});
+                        data.breadcrumb.unshift({url: item.path, title: item.display_name});
                         return true;
                     }
                 }
                 return false;
             }
 
-            let menu = store.getters.get_menu;
+            let data = {title: "", menu: "", description: "", breadcrumb: []};
+            let menu = store.state.frame.sidebar_menu;
             if (!_.isObject(menu) || _.isEmpty(menu)) {
                 return false;
             }
             find(menu);
-            _.first(state.breadcrumb).first = 1;
-            _.last(state.breadcrumb).last = 1;
+            _.first(data.breadcrumb).first = 1;
+            _.last(data.breadcrumb).last = 1;
+            state.commit('breadcrumb_change', data);
         }
     }
 };
@@ -186,7 +159,6 @@ const breadcrumb = {
 window.store = new Vuex.Store({
     strict: process.env.NODE_ENV !== 'production',
     modules: {
-        temp,
         frame,
         breadcrumb,
     }
@@ -200,5 +172,29 @@ window.vm = new Vue({
 
 //全局方法
 window.can = name => !!_.find(store.state.frame.permissions, {name});
+
+
+window.temp = {
+    state: {},
+    store: (name, data) => {
+        let arr = name.split('.');
+        let p = temp.state;
+        for (let i = 0; i < arr.length - 1; i++) {
+            if (typeof(p[arr[i]]) == "undefined") {
+                p[arr[i]] = {};
+            }
+            p = p[arr[i]];
+        }
+        p[_.last(arr)] = data;
+    },
+    delete: (name) => {
+        let arr = name.split('.');
+        let p = temp.state;
+        for (let i = 0; i < arr.length - 1; i++) {
+            p = p[arr[i]];
+        }
+        delete p[_.last(arr)];
+    }
+};
 
 store.dispatch('init');

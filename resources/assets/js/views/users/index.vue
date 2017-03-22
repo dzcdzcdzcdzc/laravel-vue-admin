@@ -90,7 +90,7 @@
                                     $('.deletebtn').tooltipster('hide');
                                     axios.delete('/api/users/'+id).then(function (response) {
                                         if(!response.data.error){
-                                            store.dispatch('temp_trigger', {name:"datatables.reload", data:null});
+                                            temp.state.datatables.reload();
                                             toastr.success(response.data.msg);
                                             return false;
                                         }

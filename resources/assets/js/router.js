@@ -24,6 +24,6 @@ window.router = new VueRouter({
 
 //路由切换钩子
 window.router.beforeEach((to, from, next) => {
-    store.commit('breadcrumb_change', to.path);
+    store.dispatch('breadcrumb_change', to.path);
     next();
 });
