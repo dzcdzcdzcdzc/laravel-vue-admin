@@ -111,6 +111,7 @@ const breadcrumb = {
         /**
          *查找路由更新面包屑
          * @param state
+         * @param data
          */
         breadcrumb_change: (state, data) => {
             state.title = data.title;
@@ -125,7 +126,7 @@ const breadcrumb = {
                 for (let key of Object.keys(menu)) {
                     let item = menu[key];
                     if (item.path) {
-                        if ((item.exact && path == item.path) ||
+                        if ((item.exact && path === item.path) ||
                             (!item.exact && !path.indexOf(item.path))) {
                             data.title = item.display_name;
                             data.menu = item.menu;
@@ -180,7 +181,7 @@ window.temp = {
         let arr = name.split('.');
         let p = temp.state;
         for (let i = 0; i < arr.length - 1; i++) {
-            if (typeof(p[arr[i]]) == "undefined") {
+            if (typeof(p[arr[i]]) === "undefined") {
                 p[arr[i]] = {};
             }
             p = p[arr[i]];
