@@ -14,6 +14,13 @@ const routes = [
         })
     }
     },
+    {
+        path: '/users/:id/edit', component: resolve => {
+        require.ensure(['./views/users/edit.vue'], () => {
+            resolve(require('./views/users/edit.vue'))
+        })
+    }
+    },
 ];
 
 //路由初始化

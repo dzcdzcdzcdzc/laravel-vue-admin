@@ -8,7 +8,7 @@ $("#app").on("click", "a", function (event) {
             break;
         case !(href.toLowerCase().indexOf("javascript")):
         case !(href.toLowerCase().indexOf("mailto")):
-        case self.attr("target") == "_blank":
+        case self.attr("target") === "_blank":
         case self.attr("download"):
             break;
         default:

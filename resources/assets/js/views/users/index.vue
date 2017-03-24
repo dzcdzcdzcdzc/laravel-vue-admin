@@ -4,11 +4,11 @@
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">Hover Data Table</h3>
+                        <h3 class="box-title">用户列表</h3>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <datatables :conf="datatables">
+                        <d-datatables :conf="datatables">
                             <thead>
                             <tr>
                                 <th><input class="chkall" type="checkbox"></th>
@@ -19,7 +19,7 @@
                                 <th>操作</th>
                             </tr>
                             </thead>
-                        </datatables>
+                        </d-datatables>
                     </div>
                     <!-- /.box-body -->
                 </div>
@@ -54,9 +54,9 @@
                         {
                             "data": "operate", "orderable": false,
                             "render": function (data, type, row) {
-                                var str = '<div class="btn-group">';
+                                let str = '<div class="btn-group">';
                                 if (can('用户管理修改')) {
-                                    str += '<button type="button" class="btn btn-default btn-xs">修改</button>';
+                                    str += `<button type="button" onclick="router.push('/users/${row.id}/edit')" class="btn btn-default btn-xs">修改</button>`;
                                 }
                                 if (can('用户管理删除')) {
                                     str += `<button type="button" class="btn btn-default btn-xs deletebtn" data-id="${row.id}">删除</button>`;

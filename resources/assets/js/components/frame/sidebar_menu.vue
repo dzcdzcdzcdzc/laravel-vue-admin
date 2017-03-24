@@ -8,7 +8,7 @@
                     <i class="fa" :class="treeview.icons"></i><span>{{treeview.display_name}}</span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                     </a>
-                    <sidebar_menu_treeview v-if="Object.keys(treeview.children).length" :treeview="treeview.children"></sidebar_menu_treeview>
+                    <d-sidebar_menu_treeview v-if="Object.keys(treeview.children).length" :treeview="treeview.children"></d-sidebar_menu_treeview>
                 </li>
             </template>
         </template>

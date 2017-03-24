@@ -1,1 +1,5 @@
-frame.js
+*.js
+!app.js
+!app.min.js
+!demo.js
+!last.js

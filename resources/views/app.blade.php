@@ -224,7 +224,7 @@
             </form>
             <!-- /.search form -->
             <!-- sidebar menu: : style can be found in sidebar.less -->
-            <sidebar_menu></sidebar_menu>
+            <d-sidebar_menu></d-sidebar_menu>
         </section>
         <!-- /.sidebar -->
     </aside>
@@ -234,7 +234,7 @@
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
-        <content_header></content_header>
+        <d-content_header></d-content_header>
 
         <router-view>
         </router-view>
