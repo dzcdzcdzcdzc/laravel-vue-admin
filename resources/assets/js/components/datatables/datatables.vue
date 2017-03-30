@@ -24,7 +24,7 @@
         },
         data() {
             return {
-                id: 'datatables' + Math.floor(Math.random() * 100000)
+                id: mkid()
             }
         },
         created() {
