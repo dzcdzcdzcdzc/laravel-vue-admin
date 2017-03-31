@@ -6,13 +6,30 @@
 ##控件
 AdminLTE 2.3
 
-Vue 2.1
+Vue 2.2
 
-vuex 2.1
+vuex 2.2
 
-Vue-router 2.1
+Vue-router 2.3
 
 Laravel 5.4
+
+##安装
+composer install
+
+npm install
+
+npm run dev
+
+如果datatables控件报错，执行以下语句重新安装：
+
+npm remove datatables.net
+
+npm remove datatables.net-bs
+
+npm install datatables.net
+
+npm install datatables.net-bs
 
 ##注意
 composer中的zizaco/entrust需要使用laravel的缓存的tag方法。tag方法无法在file和database存储类型下使用。

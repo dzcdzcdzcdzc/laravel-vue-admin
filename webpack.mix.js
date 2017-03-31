@@ -23,3 +23,11 @@ mix.autoload({
     jquery: 'jquery',
     _: 'lodash'
 });
+mix.webpackConfig({
+    resolve:{
+        alias: {
+            'vue$': 'vue/dist/vue.common.js',
+            'vue-router$': 'vue-router/dist/vue-router.common.js'
+        }
+    },
+});
