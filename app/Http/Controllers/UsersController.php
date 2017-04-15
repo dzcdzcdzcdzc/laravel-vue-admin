@@ -26,10 +26,16 @@ class UsersController extends Controller
         return response()->json($dt);
     }
 
+    public function edit($id)
+    {
+        return User::findOrfail($id)->json();
+    }
+
     public function destroy($id)
     {
-        $deletedRows = User::destroy($id);
-        if ($deletedRows) return response()->json(['error' => 0, 'msg' => '删除成功']);
+        if (User::destroy($id)) {
+            return response()->json(['error' => 0, 'msg' => '删除成功']);
+        };
         return response()->json(['error' => 0, 'msg' => '没有数据被删除']);
     }
 }

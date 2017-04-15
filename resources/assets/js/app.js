@@ -71,7 +71,7 @@ const breadcrumb = {
     },
     mutations: {
         /**
-         *查找路由更新面包屑
+         * 查找路由更新面包屑
          * @param state
          * @param data
          */
@@ -87,15 +87,14 @@ const breadcrumb = {
             function find(menu) {
                 for (let key of Object.keys(menu)) {
                     let item = menu[key];
-                    if (item.path) {
-                        if ((item.exact && path === item.path) ||
-                            (!item.exact && !path.indexOf(item.path))) {
-                            data.title = item.display_name;
-                            data.menu = item.menu;
-                            data.description = item.description;
-                            data.breadcrumb.unshift({url: item.path, title: item.display_name});
-                            return true;
-                        }
+                    if (item.path &&
+                        ((item.exact && path === item.path) ||
+                        (!item.exact && !path.indexOf(item.path)))) {
+                        data.title = item.display_name;
+                        data.menu = item.menu;
+                        data.description = item.description;
+                        data.breadcrumb.unshift({url: item.path, title: item.display_name});
+                        return true;
                     }
                     if (!_.isEmpty(item.children) && find(item.children)) {
                         data.breadcrumb.unshift({url: item.path, title: item.display_name});
@@ -118,12 +117,26 @@ const breadcrumb = {
     }
 };
 
+//vuex表单
+const form = {
+    state: {},
+    mutations: {
+        form_change: (state, data) => {
+            state[data.name] = data.value;
+        },
+        form_destroy: (state) => {
+            state = {};
+        },
+    },
+};
+
 //vuex加载模块
 window.store = new Vuex.Store({
     strict: process.env.NODE_ENV !== 'production',
     modules: {
         frame,
         breadcrumb,
+        form,
     }
 });
 

@@ -18,6 +18,7 @@ Route::group(['prefix' => 'api'], function () {
 
     //用户管理
     Route::get('/users', 'UsersController@index');
+    Route::get('/users/{id}/edit', 'UsersController@edit');
     Route::delete('/users/{id}', 'UsersController@destroy');
 });
 

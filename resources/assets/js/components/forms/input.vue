@@ -4,8 +4,10 @@
             <div class="form-group">
                 <label :for="id" class="col-sm-2 control-label">{{placeholder}}</label>
                 <div class="col-sm-10">
-                    <input :type="type" class="form-control"
-                           :name="name" :id="id" :placeholder="placeholder" :value="value">
+                    <input type="password" v-if="type=='password'" class="form-control"
+                           :name="name" :id="id" :placeholder="placeholder" v-model="value">
+                    <input type="text" v-else class="form-control"
+                           :name="name" :id="id" :placeholder="placeholder" v-model="value">
                 </div>
             </div>
         </div>
@@ -27,15 +29,24 @@
                 type: String,
                 default: ''
             },
-            'value': {
-                type: String,
-                default: ''
-            },
         },
         data() {
             return {
                 id: mkid()
             }
         },
+        computed: {
+            value: {
+                get() {
+                    if (!store.state.from || !store.state.from[this.name]) {
+                        return '';
+                    }
+                    return String(store.state.from[this.name]);
+                },
+                set(value) {
+                    store.commit('form_change', {name: this.name, value: value})
+                }
+            }
+        }
     }
 </script>

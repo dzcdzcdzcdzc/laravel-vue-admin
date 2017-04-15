@@ -30,16 +30,16 @@
         created() {
             if (!$.fn.dataTable.pipeline) { //管道式分页加载数据
                 $.fn.dataTable.pipeline = function (conf) {
-                    var cacheLower = -1;
-                    var cacheUpper = null;
-                    var cacheLastRequest = null;
-                    var cacheLastJson = null;
+                    let cacheLower = -1;
+                    let cacheUpper = null;
+                    let cacheLastRequest = null;
+                    let cacheLastJson = null;
                     return function (request, drawCallback, settings) {
-                        var ajax = false;
-                        var requestStart = request.start;
-                        var drawStart = request.start;
-                        var requestLength = request.length;
-                        var requestEnd = requestStart + requestLength;
+                        let ajax = false;
+                        let requestStart = request.start;
+                        let drawStart = request.start;
+                        let requestLength = request.length;
+                        let requestEnd = requestStart + requestLength;
                         if (settings.clearCache) {
                             ajax = true;
                             settings.clearCache = false;
@@ -64,7 +64,7 @@
                             request.start = requestStart;
                             request.length = requestLength * conf.pages;
                             if ($.isFunction(conf.data)) {
-                                var d = conf.data(request);
+                                let d = conf.data(request);
                                 if (d) {
                                     $.extend(request, d);
                                 }
@@ -79,7 +79,7 @@
                                 "cache": false,
                                 "success": function (json) {
                                     cacheLastJson = $.extend(true, {}, json);
-                                    if (cacheLower != drawStart) {
+                                    if (cacheLower !== drawStart) {
                                         json.data.splice(0, drawStart - cacheLower);
                                     }
                                     if (requestLength >= -1) {
@@ -89,7 +89,7 @@
                                 }
                             });
                         } else {
-                            var json = $.extend(true, {}, cacheLastJson);
+                            let json = $.extend(true, {}, cacheLastJson);
                             json.draw = request.draw;
                             json.data.splice(0, requestStart - cacheLower);
                             json.data.splice(requestLength, json.data.length);

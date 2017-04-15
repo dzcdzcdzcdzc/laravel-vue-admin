@@ -37,5 +37,7 @@ composer中的zizaco/entrust需要使用laravel的缓存的tag方法。tag方法
 详见：https://laravel.com/docs/5.4/cache#cache-tags
 
 去除了AdminLte 2.3 app.js中的parent.find('li.active').removeClass('active');
+
+去除了AdminLte的css中的所有谷歌字体
 ## 许可
 GNU GENERAL PUBLIC LICENSE
