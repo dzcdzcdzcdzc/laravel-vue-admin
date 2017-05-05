@@ -121,13 +121,18 @@ const breadcrumb = {
 const form = {
     state: {},
     mutations: {
+        form_create: (state, data) => {
+            for (let key of Object.keys(data)) {
+                state[key] = data[key];
+            }
+        },
         form_change: (state, data) => {
             state[data.name] = data.value;
         },
         form_destroy: (state) => {
             state = {};
         },
-    },
+    }
 };
 
 //vuex加载模块

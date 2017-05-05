@@ -30,9 +30,6 @@
         <!-- /.row -->
     </section>
 </template>
-<style>
-
-</style>
 <script>
     import 'tooltipster'
     export default {

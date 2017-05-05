@@ -22,13 +22,12 @@ class UsersController extends Controller
         }
         $dt['recordsFiltered'] = $list->count();
         $dt['data'] = $list->skip($start)->take($length)->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])->get();
-        $dt['draw'] = intval($request->input('draw', 0));
         return response()->json($dt);
     }
 
     public function edit($id)
     {
-        return User::findOrfail($id)->json();
+        return User::select('id', 'name', 'email')->findOrfail($id);
     }
 
     public function destroy($id)

@@ -24,13 +24,30 @@
         <!-- /.row -->
     </section>
 </template>
-<style>
-
-</style>
 <script>
     export default {
-        data(){
-            return {}
+        data () {
+            return {
+                data: null,
+            }
+        },
+        beforeRouteEnter (to, from, next) {
+            axios.get('/api/users/' + to.params.id + '/edit').then(function (response) {
+                let data = response.data;
+                store.commit('form_create', data);
+                next()
+            }).catch(function (error) {
+                ajax_except(error);
+                next(false)
+            });
+        },
+        watch: {
+            $route () {
+                axios.get('/api/users/' + to.params.id + '/edit').then(function (response) {
+                    let data = response.data;
+                    store.commit('form_create', data);
+                }).catch(ajax_except);
+            }
         }
     }
 
