@@ -77,14 +77,26 @@ class UsersController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  int $user
+     * @param User|int $user
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, User $user)
     {
-        dd($user);
         $user->name = $request->input('name');
-        $user->email = $request->input('name');
+        $user->email = $request->input('email');
+        $password1 = $request->input('password1');
+        $password2 = $request->input('password2');
+        if ($password1 && $password2) {
+            if ($password1 == $password2) {
+                $user->password = bcrypt($password1);
+            } else {
+                return response()->json(['error' => 1, 'msg' => '两次密码不相等']);
+            }
+        }
+        if($user->save()) {
+            return response()->json(['error' => 0, 'msg' => '修改成功']);
+        }
+        return response()->json(['error' => 1, 'msg' => '修改失败']);
     }
 
     /**
@@ -98,6 +110,6 @@ class UsersController extends Controller
         if (User::destroy($id)) {
             return response()->json(['error' => 0, 'msg' => '删除成功']);
         };
-        return response()->json(['error' => 0, 'msg' => '没有数据被删除']);
+        return response()->json(['error' => 1, 'msg' => '没有数据被删除']);
     }
 }

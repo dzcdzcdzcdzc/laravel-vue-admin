@@ -1,4 +1,5 @@
 *.js
+!pages/*
 !app.js
 !app.min.js
 !demo.js

@@ -13,7 +13,7 @@
                         <d-input type="password" name="password2" placeholder="再次输入密码"></d-input>
                     </div>
                     <div class="box-footer">
-                        <button type="button" class="btn btn-default pull-right">取消</button>
+                        <button type="button" @click="cancel" class="btn btn-default pull-right">取消</button>
                         <button type="button" @click="submit" class="btn btn-info pull-right">提交</button>
                     </div>
                 </div>
@@ -50,8 +50,13 @@
         methods: {
             submit: function () {
                 axios.put('/api/users/' + router.history.current.params.id, store.state.form).then(function (response) {
-                    console.log(response);
+                    if (!response.data.error) {
+                        router.back();
+                    }
                 });
+            },
+            cancel: function () {
+                router.back();
             }
         }
     }

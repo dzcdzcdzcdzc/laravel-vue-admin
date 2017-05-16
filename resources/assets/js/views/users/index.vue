@@ -88,10 +88,8 @@
                                     axios.delete('/api/users/' + id).then(function (response) {
                                         if (!response.data.error) {
                                             temp.state.datatables.reload();
-                                            toastr.success(response.data.msg);
                                             return false;
                                         }
-                                        toastr.error(response.data.msg);
                                     });
                                 });
                                 //删除取消事件

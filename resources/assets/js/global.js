@@ -50,9 +50,16 @@ window.toastr.options = {
     "hideMethod": "fadeOut"
 };
 
-//全局请求错误处理方法
+//全局请求消息处理
 axios.interceptors.response.use(
     response => {
+        if (typeof(response.data.error) !== "undefined" && typeof(response.data.msg) === "string") {
+            if (!response.data.error) {
+                toastr.success(response.data.msg);
+            } else {
+                toastr.error(response.data.msg);
+            }
+        }
         return response;
     },
     error => {
@@ -62,6 +69,9 @@ axios.interceptors.response.use(
                 return;
             }
             switch (error.response.status) {
+                case 404:
+                    toastr.error("页面未找到");
+                    return;
                 case 405:
                     toastr.error("请求方法不允许");
                     return;
