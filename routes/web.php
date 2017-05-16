@@ -17,9 +17,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('/path', 'FrameController@getPermission');
 
     //用户管理
-    Route::get('/users', 'UsersController@index');
-    Route::get('/users/{id}/edit', 'UsersController@edit');
-    Route::delete('/users/{id}', 'UsersController@destroy');
+    Route::resource('/users', 'UsersController');
 });
 
 Route::get('/{a?}/{b?}/{c?}/{d?}/{e?}', 'HomeController@index');

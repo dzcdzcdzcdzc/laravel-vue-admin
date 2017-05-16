@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Model\User;
 use Illuminate\Http\Request;
+use App\Model\User;
 
 class UsersController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index(Request $request)
     {
         $dt['draw'] = intval($request->input('draw')) or abort(403);
@@ -25,11 +30,69 @@ class UsersController extends Controller
         return response()->json($dt);
     }
 
-    public function edit($id)
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
     {
-        return User::select('id', 'name', 'email')->findOrfail($id);
+        //
     }
 
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        return User::select('name', 'email')->findOrfail($id);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $user
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, User $user)
+    {
+        dd($user);
+        $user->name = $request->input('name');
+        $user->email = $request->input('name');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
     public function destroy($id)
     {
         if (User::destroy($id)) {

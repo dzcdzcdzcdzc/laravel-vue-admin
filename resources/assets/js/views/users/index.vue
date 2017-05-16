@@ -92,7 +92,7 @@
                                             return false;
                                         }
                                         toastr.error(response.data.msg);
-                                    }).catch(ajax_except);
+                                    });
                                 });
                                 //删除取消事件
                                 $('.tooltipster-sidetip button.btn-info').click(function () {

@@ -56,7 +56,7 @@ const frame = {
                 });
                 state.commit('sidebar_menu_change', menu);
                 state.dispatch('breadcrumb_change', window.location.pathname);
-            }).catch(ajax_except);
+            });
         }
     }
 };
@@ -130,7 +130,9 @@ const form = {
             state[data.name] = data.value;
         },
         form_destroy: (state) => {
-            state = {};
+            for (let key of Object.keys(data)) {
+                delete state[key];
+            }
         },
     }
 };

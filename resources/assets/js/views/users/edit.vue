@@ -13,8 +13,8 @@
                         <d-input type="password" name="password2" placeholder="再次输入密码"></d-input>
                     </div>
                     <div class="box-footer">
-                        <button type="submit" class="btn btn-default pull-right">取消</button>
-                        <button type="submit" class="btn btn-info pull-right">提交</button>
+                        <button type="button" class="btn btn-default pull-right">取消</button>
+                        <button type="button" @click="submit" class="btn btn-info pull-right">提交</button>
                     </div>
                 </div>
                 <!-- /.box -->
@@ -33,12 +33,10 @@
         },
         beforeRouteEnter (to, from, next) {
             axios.get('/api/users/' + to.params.id + '/edit').then(function (response) {
-                let data = response.data;
-                store.commit('form_create', data);
-                next()
+                store.commit('form_create', response.data);
+                next();
             }).catch(function (error) {
-                ajax_except(error);
-                next(false)
+                next(false);
             });
         },
         watch: {
@@ -46,7 +44,14 @@
                 axios.get('/api/users/' + to.params.id + '/edit').then(function (response) {
                     let data = response.data;
                     store.commit('form_create', data);
-                }).catch(ajax_except);
+                });
+            }
+        },
+        methods: {
+            submit: function () {
+                axios.put('/api/users/' + router.history.current.params.id, store.state.form).then(function (response) {
+                    console.log(response);
+                });
             }
         }
     }
