@@ -53,7 +53,7 @@
                             "render": function (data, type, row) {
                                 let str = '<div class="btn-group">';
                                 if (can('用户管理修改')) {
-                                    str += `<button type="button" onclick="router.push('/users/${row.id}/edit')" class="btn btn-default btn-xs">修改</button>`;
+                                    str += `<button type="button" onclick="router.push({ name: 'users_edit', params: { id: ${row.id} }})" class="btn btn-default btn-xs">修改</button>`;
                                 }
                                 if (can('用户管理删除')) {
                                     str += `<button type="button" class="btn btn-default btn-xs deletebtn" data-id="${row.id}">删除</button>`;

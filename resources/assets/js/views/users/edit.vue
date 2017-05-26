@@ -39,24 +39,16 @@
                 next(false);
             });
         },
-        watch: {
-            $route () {
-                axios.get('/api/users/' + to.params.id + '/edit').then(function (response) {
-                    let data = response.data;
-                    store.commit('form_create', data);
-                });
-            }
-        },
         methods: {
             submit: function () {
                 axios.put('/api/users/' + router.history.current.params.id, store.state.form).then(function (response) {
                     if (!response.data.error) {
-                        router.back();
+                        router.push({name: 'users_index'});
                     }
                 });
             },
             cancel: function () {
-                router.back();
+                router.push({name: 'users_index'});
             }
         }
     }

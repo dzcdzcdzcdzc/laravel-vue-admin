@@ -8,14 +8,14 @@ const routes = [
     }
     },
     {
-        path: '/users', component: resolve => {
+        path: '/users', name: 'users_index', component: resolve => {
         require.ensure(['./views/users/index.vue'], () => {
             resolve(require('./views/users/index.vue'))
         })
     }
     },
     {
-        path: '/users/:id/edit', component: resolve => {
+        path: '/users/:id/edit', name: 'users_edit', component: resolve => {
         require.ensure(['./views/users/edit.vue'], () => {
             resolve(require('./views/users/edit.vue'))
         })
