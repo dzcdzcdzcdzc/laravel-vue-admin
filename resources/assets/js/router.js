@@ -15,6 +15,13 @@ const routes = [
     }
     },
     {
+        path: '/users/create', name: 'users_create', component: resolve => {
+        require.ensure(['./views/users/create.vue'], () => {
+            resolve(require('./views/users/create.vue'))
+        })
+    }
+    },
+    {
         path: '/users/:id/edit', name: 'users_edit', component: resolve => {
         require.ensure(['./views/users/edit.vue'], () => {
             resolve(require('./views/users/edit.vue'))

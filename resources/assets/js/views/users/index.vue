@@ -8,6 +8,7 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
+                        <button type="button" class="btn btn-primary btn-flat" @click="create">添加</button>
                         <d-datatables :conf="datatables">
                             <thead>
                             <tr>
@@ -100,6 +101,12 @@
                         });
                     }
                 }
+            }
+        },
+        methods: {
+            create: function () {
+                console.log('11');
+                router.push({name: 'users_create'});
             }
         }
     }

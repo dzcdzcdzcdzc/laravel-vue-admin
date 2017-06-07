@@ -93,7 +93,7 @@ class UsersController extends Controller
                 return response()->json(['error' => 1, 'msg' => '两次密码不相等']);
             }
         }
-        if($user->save()) {
+        if ($user->save()) {
             return response()->json(['error' => 0, 'msg' => '修改成功']);
         }
         return response()->json(['error' => 1, 'msg' => '修改失败']);

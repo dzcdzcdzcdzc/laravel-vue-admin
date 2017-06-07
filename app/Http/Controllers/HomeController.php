@@ -8,7 +8,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $data=[];
+        $data = [];
         return view('app', $data);
     }
 }
