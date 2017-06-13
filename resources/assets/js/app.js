@@ -129,8 +129,8 @@ const form = {
         form_change: (state, data) => {
             state[data.name] = data.value;
         },
-        form_destroy: (state, data) => {
-            for (let key of Object.keys(data)) {
+        form_destroy: (state) => {
+            for (let key of Object.keys(state)) {
                 delete state[key];
             }
         },

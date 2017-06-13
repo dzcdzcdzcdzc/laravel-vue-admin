@@ -38,12 +38,12 @@
             }
         },
         beforeRouteEnter (to, from, next) {
-            store.commit('form_destroy'); //Fixme TypeError: can't convert undefined to object
+            store.commit('form_destroy');
             next();
         },
         methods: {
             submit: function () {
-                axios.put('/api/users/', store.state.form).then(function (response) {
+                axios.post('/api/users', store.state.form).then(function (response) {
                     if (!response.data.error) {
                         router.push({name: 'users_index'});
                     }

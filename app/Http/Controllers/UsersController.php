@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\User\Create;
 use Illuminate\Http\Request;
 use App\Model\User;
 
@@ -33,11 +34,25 @@ class UsersController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param Create $request
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Create $request)
     {
-        //
+        $user = new User();
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $password1 = $request->input('password1');
+        $password2 = $request->input('password2');
+        if ($password1 == $password2) {
+            $user->password = bcrypt($password1);
+        } else {
+            return response()->json(['error' => 1, 'msg' => '两次密码不相等']);
+        }
+        if ($user->save()) {
+            return response()->json(['error' => 0, 'msg' => '修改成功']);
+        }
+        return response()->json(['error' => 1, 'msg' => '修改失败']);
     }
 
     /**

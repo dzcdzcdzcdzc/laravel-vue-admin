@@ -105,7 +105,6 @@
         },
         methods: {
             create: function () {
-                console.log('11');
                 router.push({name: 'users_create'});
             }
         }
