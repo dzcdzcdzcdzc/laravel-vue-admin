@@ -6,9 +6,9 @@
 ## 控件
 AdminLTE 2.3
 
-Vue 2.2
+Vue 2.3
 
-vuex 2.2
+vuex 2.3
 
 Vue-router 2.3
 
