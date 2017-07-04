@@ -28,6 +28,27 @@ const routes = [
         })
     }
     },
+    {
+        path: '/roles', name: 'roles_index', component: resolve => {
+        require.ensure(['./views/roles/index.vue'], () => {
+            resolve(require('./views/roles/index.vue'))
+        })
+    }
+    },
+    {
+        path: '/roles/create', name: 'roles_create', component: resolve => {
+        require.ensure(['./views/roles/create.vue'], () => {
+            resolve(require('./views/roles/create.vue'))
+        })
+    }
+    },
+    {
+        path: '/roles/:id/edit', name: 'roles_edit', component: resolve => {
+        require.ensure(['./views/roles/edit.vue'], () => {
+            resolve(require('./views/roles/edit.vue'))
+        })
+    }
+    },
 ];
 
 //路由初始化

@@ -17,6 +17,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('/path', 'FrameController@getPermission');
 
     //用户管理
+    Route::resource('/roles', 'RolesController');
     Route::resource('/users', 'UsersController');
 });
 
