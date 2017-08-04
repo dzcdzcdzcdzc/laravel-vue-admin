@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\User\Create;
+use App\Http\Requests\User\Store;
 use App\Model\Role;
 use Illuminate\Http\Request;
 
@@ -34,19 +34,12 @@ class RolesController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @param Create $request
+     * @param Store $request
      * @return \Illuminate\Http\Response
      */
-    public function create(Create $request)
+    public function create(Store $request)
     {
-        $role = new Role();
-        $role->name = $request->input('name');
-        $role->display_name = $request->input('display_name');
-        $role->description = $request->input('description');
-        if ($role->save()) {
-            return response()->json(['error' => 0, 'msg' => '修改成功']);
-        }
-        return response()->json(['error' => 1, 'msg' => '修改失败']);
+        //
     }
 
     /**
@@ -57,7 +50,14 @@ class RolesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $role = new Role();
+        $role->name = $request->input('name');
+        $role->display_name = $request->input('display_name');
+        $role->description = $request->input('description');
+        if ($role->save()) {
+            return response()->json(['error' => 0, 'msg' => '添加成功']);
+        }
+        return response()->json(['error' => 1, 'msg' => '添加失败']);
     }
 
     /**

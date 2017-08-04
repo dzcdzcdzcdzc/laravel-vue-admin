@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\User\Create;
+use App\Http\Requests\User\Store;
 use Illuminate\Http\Request;
 use App\Model\User;
 
@@ -11,6 +11,7 @@ class UsersController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -33,11 +34,21 @@ class UsersController extends Controller
 
     /**
      * Show the form for creating a new resource.
+     * @return \Illuminate\Http\Response
+     * @internal param Create $request
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
      *
-     * @param Create $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function create(Create $request)
+    public function store(Store $request)
     {
         $user = new User();
         $user->name = $request->input('name');
@@ -53,17 +64,6 @@ class UsersController extends Controller
             return response()->json(['error' => 0, 'msg' => '修改成功']);
         }
         return response()->json(['error' => 1, 'msg' => '修改失败']);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     /**
@@ -92,11 +92,13 @@ class UsersController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param User|int $user
+     * @param $id
      * @return \Illuminate\Http\Response
+     * @internal param User|int $user
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
+        $user = User::select('name', 'email')->findOrfail($id);
         $user->name = $request->input('name');
         $user->email = $request->input('email');
         $password1 = $request->input('password1');

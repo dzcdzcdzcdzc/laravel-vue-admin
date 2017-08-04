@@ -14,11 +14,20 @@
 Auth::routes();
 
 Route::group(['prefix' => 'api'], function () {
-    Route::get('/path', 'FrameController@getPermission');
+    Route::get('path', 'FrameController@getPermission');
 
     //用户管理
-    Route::resource('/roles', 'RolesController');
-    Route::resource('/users', 'UsersController');
+    Route::get('roles', 'RolesController@index');
+    Route::post('roles', 'RolesController@store');
+    Route::get('roles/{id}/edit', 'RolesController@edit');
+    Route::put('roles/{id}', 'RolesController@update');
+    Route::delete('roles/{id}', 'RolesController@destroy');
+
+    Route::get('users', 'UsersController@index');
+    Route::post('users', 'UsersController@store');
+    Route::get('users/{id}/edit', 'UsersController@edit');
+    Route::put('users/{id}', 'UsersController@update');
+    Route::delete('users/{id}', 'UsersController@destroy');
 });
 
 Route::get('/{a?}/{b?}/{c?}/{d?}/{e?}', 'HomeController@index');

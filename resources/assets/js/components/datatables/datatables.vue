@@ -11,6 +11,7 @@
 
 <script>
     import 'datatables.net-bs'
+
     export default {
         props: {
             'name': {
@@ -86,6 +87,9 @@
                                         json.data.splice(requestLength, json.data.length);
                                     }
                                     drawCallback(json);
+                                },
+                                "error": function (XMLHttpRequest, textStatus, errorThrown) {
+                                    error_http(XMLHttpRequest.status);
                                 }
                             });
                         } else {
