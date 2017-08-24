@@ -55,19 +55,19 @@ window.error_http = (status) => {
     switch (status) {
         case 401:
             toastr.error("用户未登录");
-            return;
+            return true;
         case 403:
             toastr.error("请求被拒绝");
-            return;
+            return true;
         case 404:
             toastr.error("页面未找到");
-            return;
+            return true;
         case 405:
             toastr.error("请求方法不允许");
-            return;
+            return true;
         case 500:
             toastr.error("服务器错误");
-            return;
+            return true;
     }
 };
 
@@ -89,7 +89,9 @@ axios.interceptors.response.use(
                 toastr.error(error.response.data.error);
                 return;
             }
-            error_http(error.response.status);
+            if (error_http(error.response.status)) {
+                return;
+            }
         }
         toastr.error(error.message);
     }

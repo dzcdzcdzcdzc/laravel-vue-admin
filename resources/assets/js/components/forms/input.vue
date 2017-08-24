@@ -4,8 +4,8 @@
         <div class="col-sm-10">
             <input type="password" v-if="type=='password'" class="form-control"
                    :name="name" :id="id" :placeholder="placeholder" :value="value" v-model="value">
-            <input type="text" v-else class="form-control"
-                   :name="name" :id="id" :placeholder="placeholder" :value="value" v-model="value">
+            <input v-else class="form-control" :name="name" :id="id" :placeholder="placeholder" :value="value"
+                   v-model="value">
         </div>
     </div>
 </template>
@@ -33,13 +33,20 @@
         },
         computed: {
             value: {
-                get() {
-                    if (!store.state.form || !store.state.form[this.name]) {
+                get () {
+                    if (typeof store.state.form === 'undefined') {
                         return '';
                     }
-                    return String(store.state.form[this.name]);
+                    switch (typeof store.state.form[this.name]) {
+                        case 'undefined':
+                        case 'object':
+                        case 'function':
+                            return '';
+                        default:
+                            return String(store.state.form[this.name]);
+                    }
                 },
-                set(value) {
+                set (value) {
                     store.commit('form_change', {name: this.name, value: value})
                 }
             }

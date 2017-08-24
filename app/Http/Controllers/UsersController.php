@@ -23,7 +23,7 @@ class UsersController extends Controller
         $length = $request->input('length', 10);
         $search = $request->input('search.value');
         $dt['recordsTotal'] = User::count();
-        $list = User::select(['id', 'name', 'email', 'created_at']);
+        $list = User::select('id', 'name', 'email', 'created_at');
         if ($search) {
             $list->where('name', 'LIKE', "%" . $search . "%");
         }
@@ -50,17 +50,17 @@ class UsersController extends Controller
      */
     public function store(Store $request)
     {
-        $user = new User();
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
+        $info = new User();
+        $info->name = $request->input('name');
+        $info->email = $request->input('email');
         $password1 = $request->input('password1');
         $password2 = $request->input('password2');
         if ($password1 == $password2) {
-            $user->password = bcrypt($password1);
+            $info->password = bcrypt($password1);
         } else {
             return response()->json(['error' => 1, 'msg' => '两次密码不相等']);
         }
-        if ($user->save()) {
+        if ($info->save()) {
             return response()->json(['error' => 0, 'msg' => '修改成功']);
         }
         return response()->json(['error' => 1, 'msg' => '修改失败']);
@@ -94,23 +94,23 @@ class UsersController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @param $id
      * @return \Illuminate\Http\Response
-     * @internal param User|int $user
+     * @internal param User|int $info
      */
     public function update(Request $request, $id)
     {
-        $user = User::select('name', 'email')->findOrfail($id);
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
+        $info = User::findOrfail($id);
+        $info->name = $request->input('name');
+        $info->email = $request->input('email');
         $password1 = $request->input('password1');
         $password2 = $request->input('password2');
         if ($password1 && $password2) {
             if ($password1 == $password2) {
-                $user->password = bcrypt($password1);
+                $info->password = bcrypt($password1);
             } else {
                 return response()->json(['error' => 1, 'msg' => '两次密码不相等']);
             }
         }
-        if ($user->save()) {
+        if ($info->save()) {
             return response()->json(['error' => 0, 'msg' => '修改成功']);
         }
         return response()->json(['error' => 1, 'msg' => '修改失败']);

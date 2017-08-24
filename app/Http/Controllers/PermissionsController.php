@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\User\Store;
-use App\Model\Role;
 use Illuminate\Http\Request;
+use App\Model\Permission;
 
-class RolesController extends Controller
+class PermissionsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -21,8 +22,8 @@ class RolesController extends Controller
         $start = $request->input('start', 0);
         $length = $request->input('length', 10);
         $search = $request->input('search.value');
-        $dt['recordsTotal'] = Role::count();
-        $list = Role::select('id', 'name', 'display_name', 'description');
+        $dt['recordsTotal'] = Permission::count();
+        $list = Permission::select('id', 'name', 'menu', 'display_name', 'description', 'path', 'icons', 'exact');
         if ($search) {
             $list->where('name', 'LIKE', "%" . $search . "%");
         }
@@ -33,11 +34,10 @@ class RolesController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @param Store $request
      * @return \Illuminate\Http\Response
+     * @internal param Create $request
      */
-    public function create(Store $request)
+    public function create()
     {
         //
     }
@@ -48,16 +48,20 @@ class RolesController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Store $request)
     {
-        $info = new Role();
+        $info = new Permission();
         $info->name = $request->input('name');
+        $info->menu = $request->input('menu');
         $info->display_name = $request->input('display_name');
         $info->description = $request->input('description');
+        $info->path = $request->input('path');
+        $info->icons = $request->input('icons');
+        $info->exact = $request->input('exact');
         if ($info->save()) {
-            return response()->json(['error' => 0, 'msg' => '添加成功']);
+            return response()->json(['error' => 0, 'msg' => '修改成功']);
         }
-        return response()->json(['error' => 1, 'msg' => '添加失败']);
+        return response()->json(['error' => 1, 'msg' => '修改失败']);
     }
 
     /**
@@ -79,7 +83,7 @@ class RolesController extends Controller
      */
     public function edit($id)
     {
-        return Role::select('name', 'display_name', 'description')->findOrfail($id);
+        return Permission::select('name', 'menu', 'display_name', 'description', 'path', 'icons', 'exact')->findOrfail($id);
     }
 
     /**
@@ -88,15 +92,18 @@ class RolesController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @param $id
      * @return \Illuminate\Http\Response
-     * @internal param Role $info
-     * @internal param User|int $user
+     * @internal param User|int $info
      */
     public function update(Request $request, $id)
     {
-        $info = Role::findOrfail($id);
+        $info = Permission::findOrfail($id);
         $info->name = $request->input('name');
+        $info->menu = $request->input('menu');
         $info->display_name = $request->input('display_name');
         $info->description = $request->input('description');
+        $info->path = $request->input('path');
+        $info->icons = $request->input('icons');
+        $info->exact = $request->input('exact');
         if ($info->save()) {
             return response()->json(['error' => 0, 'msg' => '修改成功']);
         }
@@ -111,7 +118,7 @@ class RolesController extends Controller
      */
     public function destroy($id)
     {
-        if (Role::destroy($id)) {
+        if (Permission::destroy($id)) {
             return response()->json(['error' => 0, 'msg' => '删除成功']);
         };
         return response()->json(['error' => 1, 'msg' => '没有数据被删除']);

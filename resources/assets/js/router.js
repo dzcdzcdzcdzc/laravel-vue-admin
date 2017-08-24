@@ -49,6 +49,27 @@ const routes = [
         })
     }
     },
+    {
+        path: '/permissions', name: 'permissions_index', component: resolve => {
+        require.ensure(['./views/permissions/index.vue'], () => {
+            resolve(require('./views/permissions/index.vue'))
+        })
+    }
+    },
+    {
+        path: '/permissions/create', name: 'permissions_create', component: resolve => {
+        require.ensure(['./views/permissions/create.vue'], () => {
+            resolve(require('./views/permissions/create.vue'))
+        })
+    }
+    },
+    {
+        path: '/permissions/:id/edit', name: 'permissions_edit', component: resolve => {
+        require.ensure(['./views/permissions/edit.vue'], () => {
+            resolve(require('./views/permissions/edit.vue'))
+        })
+    }
+    },
 ];
 
 //路由初始化

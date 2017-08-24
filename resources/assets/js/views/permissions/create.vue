@@ -4,15 +4,18 @@
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">用户添加</h3>
+                        <h3 class="box-title">角色权限添加</h3>
                     </div>
                     <div class="box-body">
                         <div class="form-horizontal">
                             <div class="box-body">
-                                <d-input name="name" placeholder="用户名"></d-input>
-                                <d-input name="email" placeholder="email"></d-input>
-                                <d-input type="password" name="password1" placeholder="密码"></d-input>
-                                <d-input type="password" name="password2" placeholder="再次输入密码"></d-input>
+                                <d-input name="name" placeholder="名字"></d-input>
+                                <d-input name="menu" placeholder="菜单"></d-input>
+                                <d-input name="display_name" placeholder="显示"></d-input>
+                                <d-input name="description" placeholder="描述"></d-input>
+                                <d-input name="path" placeholder="地址"></d-input>
+                                <d-input name="icons" placeholder="图标"></d-input>
+                                <d-input name="exact" placeholder="完全匹配"></d-input>
                             </div>
                         </div>
                     </div>
@@ -43,14 +46,14 @@
         },
         methods: {
             submit: function () {
-                axios.post('/api/users', store.state.form).then(function (response) {
+                axios.post('/api/permissions', store.state.form).then(function (response) {
                     if (!response.data.error) {
-                        router.push({name: 'users_index'});
+                        router.push({name: 'permissions_index'});
                     }
                 });
             },
             cancel: function () {
-                router.push({name: 'users_index'});
+                router.push({name: 'permissions_index'});
             }
         }
     }

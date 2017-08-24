@@ -28,6 +28,12 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('users/{id}/edit', 'UsersController@edit');
     Route::put('users/{id}', 'UsersController@update');
     Route::delete('users/{id}', 'UsersController@destroy');
+
+    Route::get('permissions', 'PermissionsController@index');
+    Route::post('permissions', 'PermissionsController@store');
+    Route::get('permissions/{id}/edit', 'PermissionsController@edit');
+    Route::put('permissions/{id}', 'PermissionsController@update');
+    Route::delete('permissions/{id}', 'PermissionsController@destroy');
 });
 
 Route::get('/{a?}/{b?}/{c?}/{d?}/{e?}', 'HomeController@index');

@@ -4,7 +4,7 @@
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">角色编辑</h3>
+                        <h3 class="box-title">角色添加</h3>
                     </div>
                     <div class="box-body">
                         <div class="form-horizontal">
