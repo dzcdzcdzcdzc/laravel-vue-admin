@@ -9,13 +9,13 @@
                     <div class="box-body">
                         <div class="form-horizontal">
                             <div class="box-body">
-                                <d-input name="name" placeholder="名字"></d-input>
-                                <d-input name="menu" placeholder="菜单"></d-input>
-                                <d-input name="display_name" placeholder="显示"></d-input>
-                                <d-input name="description" placeholder="描述"></d-input>
-                                <d-input name="path" placeholder="地址"></d-input>
-                                <d-input name="icons" placeholder="图标"></d-input>
-                                <d-input name="exact" placeholder="完全匹配"></d-input>
+                                <d-input name="name" label="名字"></d-input>
+                                <d-input name="menu" label="菜单"></d-input>
+                                <d-input name="display_name" label="显示"></d-input>
+                                <d-input name="description" label="描述"></d-input>
+                                <d-input name="path" label="地址"></d-input>
+                                <d-input name="icons" label="图标"></d-input>
+                                <d-input name="exact" label="完全匹配"></d-input>
                             </div>
                         </div>
                     </div>

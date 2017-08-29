@@ -11,7 +11,7 @@
 
 <script>
     import 'datatables.net-bs'
-
+    import 'datatables.net-responsive-bs'
     export default {
         props: {
             'name': {
@@ -166,8 +166,3 @@
         }
     }
 </script>
-
-<style>
-    @import "/css/plugins/dataTables.bootstrap.css";
-    @import "/plugins/datatables/extensions/Responsive/css/dataTables.responsive.css";
-</style>

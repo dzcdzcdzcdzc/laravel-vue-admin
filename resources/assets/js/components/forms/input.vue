@@ -1,10 +1,10 @@
 <template>
     <div class="form-group">
-        <label :for="id" class="col-sm-2 control-label">{{placeholder}}</label>
+        <label :for="id" class="col-sm-2 control-label">{{label}}</label>
         <div class="col-sm-10">
             <input type="password" v-if="type=='password'" class="form-control"
-                   :name="name" :id="id" :placeholder="placeholder" :value="value" v-model="value">
-            <input v-else class="form-control" :name="name" :id="id" :placeholder="placeholder" :value="value"
+                   :name="name" :id="id" :label="label" :value="value" v-model="value">
+            <input v-else class="form-control" :name="name" :id="id" :placeholder="label" :value="value"
                    v-model="value">
         </div>
     </div>
@@ -21,7 +21,7 @@
                 type: String,
                 default: 'text'
             },
-            'placeholder': {
+            'label': {
                 type: String,
                 default: ''
             },

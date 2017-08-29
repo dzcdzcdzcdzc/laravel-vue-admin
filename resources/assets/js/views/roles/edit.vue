@@ -9,9 +9,9 @@
                     <div class="box-body">
                         <div class="form-horizontal">
                             <div class="box-body">
-                                <d-input name="name" placeholder="名称"></d-input>
-                                <d-input name="display_name" placeholder="显示名称"></d-input>
-                                <d-input name="description" placeholder="描述"></d-input>
+                                <d-input name="name" label="名称"></d-input>
+                                <d-input name="display_name" label="显示名称"></d-input>
+                                <d-input name="description" label="描述"></d-input>
                             </div>
                         </div>
                     </div>

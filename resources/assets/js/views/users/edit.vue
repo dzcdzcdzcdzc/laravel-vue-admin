@@ -9,10 +9,10 @@
                     <div class="box-body">
                         <div class="form-horizontal">
                             <div class="box-body">
-                                <d-input name="name" placeholder="用户名"></d-input>
-                                <d-input name="email" placeholder="email"></d-input>
-                                <d-input type="password" name="password1" placeholder="密码"></d-input>
-                                <d-input type="password" name="password2" placeholder="再次输入密码"></d-input>
+                                <d-input name="name" label="用户名"></d-input>
+                                <d-input name="email" label="email"></d-input>
+                                <d-input type="password" name="password1" label="密码"></d-input>
+                                <d-input type="password" name="password2" label="再次输入密码"></d-input>
                             </div>
                         </div>
                     </div>
