@@ -10,8 +10,8 @@
   "devDependencies": {
     "axios": "^0.15.3",
     "cross-env": "^3.2.4",
-    "datatables.net": "^1.10.13",
-    "datatables.net-bs": "^1.10.13",
+    "datatables.net": "^1.10.15",
+    "datatables.net-bs": "^1.10.15",
     "datatables.net-responsive-bs": "^2.1.1",
     "jquery": "~2",
     "laravel-mix": "^0.12.1",
@@ -21,7 +21,8 @@
     "tooltipster": "^4.2.5",
     "vue": "~2.3",
     "vue-router": "~2.3",
+    "vue-template-compiler": "~2.3",
     "vuex": "~2.3",
-    "webpack": "^2.6.1"
+    "webpack": "^2.7.0"
   }
 }
