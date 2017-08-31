@@ -14,7 +14,9 @@
                                 <d-input name="display_name" label="显示"></d-input>
                                 <d-input name="description" label="描述"></d-input>
                                 <d-input name="path" label="地址"></d-input>
-                                <d-select name="icons" label="图标" :list="[{id:1,text:'1'},{id:2,text:'2'}]"></d-select>
+                                <d-select name="icons" label="图标" :list="[{id:1,text:'1'},{id:2,text:'2'}]">
+                                    <option>请选择</option>
+                                </d-select>
                                 <d-input name="exact" label="完全匹配"></d-input>
                             </div>
                         </div>

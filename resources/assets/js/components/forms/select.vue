@@ -1,8 +1,9 @@
 <template>
     <div class="form-group">
-        <label class="col-sm-2 control-label">{{label}}</label>
+        <label class="col-sm-2 control-label" :for="id">{{label}}</label>
         <span class="col-sm-10 selection">
             <select class="select2" :id="id" :name="name" style="width: 100%;">
+                <slot></slot>
                 <option v-for="n in list" :value="n.id">{{n.text}}</option>
             </select>
         </span>
@@ -22,7 +23,9 @@
             },
             'list': {
                 type: Array,
-                default: () => []
+                default: () => {
+                    return [];
+                }
             },
             'label': {
                 type: String,
@@ -31,6 +34,7 @@
             'conf': {
                 type: Object,
                 default: () => {
+                    return {};
                 }
             }
         },
@@ -65,13 +69,23 @@
                 placeholder: this.label,
                 allowClear: false,
             };
-            this.conf.ajax = _.defaultsDeep(this.conf.ajax || {}, this.list ? {} : {
-                url: "#",
-                cache: true,
-            });
+            if (this.conf.ajax) {
+                this.conf.ajax = _.defaultsDeep(this.conf.ajax, {
+                    url: "#",
+                    cache: true,
+                });
+            }
             let self = $("#" + this.id).select2(_.defaultsDeep(this.conf, dconf));
-            self.on("select2:select", function (e) {
-                console.log(e);
+            $("[for='" + this.id + "'").on("click", function () {
+                self.select2("open");
+            });
+            self.change(function () {
+                let val = $(this).val();
+                if (val === null) {
+                    store.commit('form_destroy', this.name);
+                } else {
+                    store.commit('form_change', {name: this.name, value: val});
+                }
             });
         }
     }

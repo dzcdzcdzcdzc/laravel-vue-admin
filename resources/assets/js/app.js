@@ -89,7 +89,7 @@ const breadcrumb = {
                     let item = menu[key];
                     if (item.path &&
                         ((item.exact && path === item.path) ||
-                        (!item.exact && !path.indexOf(item.path)))) {
+                            (!item.exact && !path.indexOf(item.path)))) {
                         data.title = item.display_name;
                         data.menu = item.menu;
                         data.description = item.description;
@@ -123,15 +123,19 @@ const form = {
     mutations: {
         form_create: (state, data) => {
             for (let key of Object.keys(data)) {
-                state[key] = data[key];
+                Vue.set(state, key, data[key]);
             }
         },
         form_change: (state, data) => {
-            state[data.name] = data.value;
+            Vue.set(state, data.name, data.value);
         },
-        form_destroy: (state) => {
-            for (let key of Object.keys(state)) {
-                delete state[key];
+        form_destroy: (state, name = '') => {
+            if (name) {
+                Vue.delete(state, name);
+            } else {
+                for (let key of Object.keys(state)) {
+                    Vue.delete(state, key);
+                }
             }
         },
     }
