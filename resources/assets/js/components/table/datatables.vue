@@ -11,6 +11,7 @@
 
 <script>
     import 'datatables.net-bs'
+    import 'datatables.net-bs/css/dataTables.bootstrap.css'
     import 'datatables.net-responsive-bs'
     export default {
         props: {
