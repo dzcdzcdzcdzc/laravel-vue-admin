@@ -117,7 +117,7 @@
                 responsive: true,
                 scrollX: "100%",
                 scrollXInner: "100%",
-                order: [[0, "asc"]],
+                order: [[0, "asc"]], //排序
                 columns: [],
                 serverSide: true,
                 language: {
@@ -146,8 +146,8 @@
                 }
             };
             this.conf.ajax = $.fn.dataTable.pipeline(_.defaultsDeep(this.conf.ajax, {
-                    url: '#',
-                    pages: 5,
+                    url: '#', //加载地址
+                    pages: 5, //每次加载页数
                     method: 'GET',
                     data: function (d) {
                         //额外数据

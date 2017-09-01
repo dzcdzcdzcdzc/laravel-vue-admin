@@ -2,7 +2,7 @@
     <div class="form-group">
         <label class="col-sm-2 control-label" :for="id">{{label}}</label>
         <span class="col-sm-10 selection">
-            <select class="select2" :id="id" :name="name" style="width: 100%;">
+            <select class="select2" :id="id" :name="name">
                 <slot></slot>
                 <option v-for="n in list" :value="n.id">{{n.text}}</option>
             </select>
@@ -19,7 +19,7 @@
         props: {
             'name': {
                 type: String,
-                default: 'name'
+                default: 'select2'
             },
             'list': {
                 type: Array,
@@ -40,45 +40,90 @@
         },
         data() {
             return {
-                id: mkid()
-            }
-        },
-        computed: {
-            value: {
-                get () {
-                    if (typeof store.state.form === 'undefined') {
-                        return '';
-                    }
-                    switch (typeof store.state.form[this.name]) {
-                        case 'undefined':
-                        case 'object':
-                        case 'function':
-                            return '';
-                        default:
-                            return String(store.state.form[this.name]);
-                    }
-                },
-                set (value) {
-                    store.commit('form_change', {name: this.name, value: value})
-                }
+                id: mkid(),
+                value: 0,
             }
         },
         mounted() {
             const dconf = {
-                language: 'zh-CN',
-                placeholder: this.label,
-                allowClear: false,
+                language: 'zh-CN', //语言
+                placeholder: this.label, //占位符
+                allowClear: false, //允许清空，值为null
+                closeOnSelect: true, //选择后是否关闭
+                minimumInputLength: 0, //最少输入字符
+                maximumInputLength: 0, //最多输入字符
+                maximumSelectionLength: 0, //最小数量的结果
+                sorter: function (data) { //排序字段
+                    return data;
+                },
+                templateResult: function (result) { //选择框模板
+                    return result.text;
+                },
+                templateSelection: function (selection) { //下拉开模板
+                    return selection.text;
+                },
+                theme: 'default', //主题
+                width: '100%',
+                escapeMarkup: function (markup) {
+                    let replaceMap = {
+                        '\\': '&#92;',
+                        '&': '&amp;',
+                        '<': '&lt;',
+                        '>': '&gt;',
+                        '"': '&quot;',
+                        '\'': '&#39;',
+                        '/': '&#47;'
+                    };
+                    if (typeof markup !== 'string') {
+                        return markup;
+                    }
+                    return String(markup).replace(/[&<>"'\/\\]/g, function (match) {
+                        return replaceMap[match];
+                    });
+                },
             };
             if (this.conf.ajax) {
                 this.conf.ajax = _.defaultsDeep(this.conf.ajax, {
                     url: "#",
-                    cache: true,
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            q: params.term,
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data, params) {
+                        params.page = params.page || 1;
+                        return {
+                            results: data.items,
+                            pagination: {
+                                more: (params.page * 30) < data.total_count
+                            }
+                        };
+                    },
+                    cache: true
                 });
             }
             let self = $("#" + this.id).select2(_.defaultsDeep(this.conf, dconf));
             $("[for='" + this.id + "'").on("click", function () {
                 self.select2("open");
             });
+            //value get
+            let def = this.conf.allowClear ? null : $('#' + this.id + ' > option:first-child').val();
+            if (typeof store.state.form === 'undefined') {
+                self.val(def);
+            }
+            switch (typeof store.state.form[this.name]) {
+                case 'undefined':
+                case 'object':
+                case 'function':
+                    self.val(def);
+                    break;
+                default:
+                    self.val(String(store.state.form[this.name]));
+            }
+            //value set
             self.change(function () {
                 let val = $(this).val();
                 if (val === null) {
