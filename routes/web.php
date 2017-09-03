@@ -36,4 +36,8 @@ Route::group(['prefix' => 'api'], function () {
     Route::delete('permissions/{id}', 'PermissionsController@destroy');
 });
 
+Route::group(['prefix'=>'dict'], function (){
+    Route::get('icons', 'DictController@icons');
+});
+
 Route::get('/{a?}/{b?}/{c?}/{d?}/{e?}', 'HomeController@index');

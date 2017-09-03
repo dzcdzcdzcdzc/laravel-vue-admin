@@ -98,7 +98,7 @@
                         return {
                             results: data.items,
                             pagination: {
-                                more: (params.page * 30) < data.total_count
+                                more: (params.page * 50) < data.total_count
                             }
                         };
                     },
@@ -106,7 +106,7 @@
                 });
             }
             let self = $("#" + this.id).select2(_.defaultsDeep(this.conf, dconf));
-            $("[for='" + this.id + "'").on("click", function () {
+            $("[for='" + this.id + "']").on("click", function () {
                 self.select2("open");
             });
             //value get
