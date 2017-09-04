@@ -9,9 +9,9 @@ class DictController extends Controller
 {
     public function icons(Request $request)
     {
-        $info = Icons::select('id')->selectRaw('concat(id,icon) as text');
+        $info = Icons::select('id')->selectSub('icon', 'text');
         if ($q = $request->input('q')) {
-            $info = $info->where('icon', '%' . $q . '%');
+            $info = $info->where('icon', 'like', '%' . $q . '%');
         }
         $page = $request->input('page', 1);
         $items = $info->offset(($page - 1) * 50)->limit(50)->get()->toArray();
